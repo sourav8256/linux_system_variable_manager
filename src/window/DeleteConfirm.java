@@ -27,7 +27,12 @@ public class DeleteConfirm extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					DeleteConfirm frame = new DeleteConfirm("test path");
+					DeleteConfirm frame = new DeleteConfirm("test path",new Callback() {
+						@Override
+						public void call() {
+							
+						}
+					});
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

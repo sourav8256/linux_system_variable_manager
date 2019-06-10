@@ -32,7 +32,7 @@ public class DBHelper {
 		
 
 		try {
-			conn = DriverManager.getConnection("jdbc:sqlite:/tmp/test.db");
+			conn = DriverManager.getConnection("jdbc:sqlite:test.db");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -53,7 +53,7 @@ public class DBHelper {
 			ps.execute();	
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 	

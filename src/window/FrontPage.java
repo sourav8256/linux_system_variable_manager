@@ -11,6 +11,7 @@ import java.awt.Panel;
 import javax.swing.JTextPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 
 import window.callbacks.Callback;
 import window.model.PathVar;
@@ -30,7 +31,9 @@ public class FrontPage {
 	private JTable table;
 	
 	DBHelper dbh;
+	PathManager pm;
 	
+	String[] headers = {"Variable Name","Path"};
 	String[][] data;
 
 	/**
@@ -62,6 +65,7 @@ public class FrontPage {
 	private void initialize() {
 		
 		dbh = new DBHelper();
+		pm = new PathManager();
 		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 725, 464);
@@ -73,9 +77,12 @@ public class FrontPage {
 		frame.getContentPane().add(lblNewLabel);
 		
 		
+		
+		
 
 		
-		// show two column list
+		// change database location
+		// do something about table already being present
 		
 		
 		
@@ -87,8 +94,7 @@ public class FrontPage {
 				AddPathVar apv = new AddPathVar(new Callback() {
 					@Override
 					public void call() {
-						data = genArrForTable(dbh.getList());
-						table.repaint();
+						refreshTable();
 					}
 				});
 				apv.setVisible(true);
@@ -107,8 +113,7 @@ public class FrontPage {
 					public void call() {
 						// TODO Auto-generated method stub
 						
-						data = genArrForTable(dbh.getList());
-						table.repaint();
+						refreshTable();
 						
 						
 					}
@@ -126,26 +131,20 @@ public class FrontPage {
 				DeleteConfirm dc = new DeleteConfirm(table.getValueAt(table.getSelectedRow(), 1).toString(),new Callback() {
 					@Override
 					public void call() {
-						data = genArrForTable(dbh.getList());
-						table.repaint();
+						refreshTable();
 					}
 				});
+				dc.setVisible(true);
 			}
 		});
 		frame.getContentPane().add(deleteBtn);
 		
-		
-		// refresh on data change
-			// how to change table data
-		
-		String[] headers = {"Variable Name","Path"};
-		
 		data = genArrForTable(dbh.getList());
 		
 		table = new JTable(data,headers);
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		table.getColumnModel().getColumn(0).setMinWidth(150);
-		table.getColumnModel().getColumn(1).setMinWidth(450);
+		//table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		//table.getColumnModel().getColumn(0).setMinWidth(150);
+		//table.getColumnModel().getColumn(1).setMinWidth(450);
 		table.setPreferredScrollableViewportSize(new Dimension(500,50));
 		table.setBounds(75, 77, 197, 96);
 		
@@ -156,6 +155,38 @@ public class FrontPage {
 		jsp.setSize(540, 381);
 		frame.getContentPane().add(jsp);
 		
+		JButton btnPushVariables = new JButton("Push Variables");
+		btnPushVariables.setBounds(563, 250, 135, 25);
+		btnPushVariables.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				
+				
+				ArrayList<PathVar> pvar = dbh.getList();
+				
+				for(int i=0;i<pvar.size();i++) {
+					if(pvar.get(i).getvName().equals("PATH")) {
+						pm.addPath(pvar.get(i).getPath());
+					} else {
+						pm.addVariable(pvar.get(i).getvName(), pvar.get(i).getPath());
+					}
+				}
+				
+				pm.pushPathVariables();
+			}
+			
+		});
+		frame.getContentPane().add(btnPushVariables);
+		
+	}
+	
+	
+	void refreshTable() {
+		data = genArrForTable(dbh.getList());
+		//table.repaint();
+		table.setModel(new DefaultTableModel(data,headers));
 	}
 	
 	
@@ -170,5 +201,4 @@ public class FrontPage {
 		
 		return array;
 	}
-	
 }

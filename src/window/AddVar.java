@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import window.activities.Popup;
 import window.callbacks.Callback;
 
 public class AddVar extends JFrame {
@@ -29,7 +30,12 @@ public class AddVar extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AddVar frame = new AddVar();
+					AddVar frame = new AddVar(new Callback() {
+						@Override
+						public void call() {
+							
+						}
+					});
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -77,9 +83,17 @@ public class AddVar extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				
-				dbh.insertVar(vnameTF.getText(), pathTF.getText());
-				callback.call();
-				dispose();
+
+				
+				if (Validator.validateVariableName(vnameTF.getText())) {
+
+					dbh.insertVar(vnameTF.getText(), pathTF.getText());
+					callback.call();
+					dispose();
+					
+				} else {
+					new Popup("Variable names cannot contain spaces").setVisible(true);
+				}
 				
 			}
 			
