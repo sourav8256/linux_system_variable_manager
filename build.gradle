@@ -1,0 +1,28 @@
+apply plugin: "java"
+
+sourceSets {
+	main.java.srcDir("src")
+}
+
+
+configurations {
+	extraLibs
+}
+
+
+dependencies {
+	compile fileTree(dir: 'libs', include: '*.jar')
+}
+
+jar {
+	from configurations.compile.collect { zipTree it }
+	manifest.attributes "Main-Class": "window.FrontPage"
+
+	into('lib') {
+		from configurations.extraLibs
+	}
+}
+
+task listjars << {
+	configurations.compile.each { File file -> println file.name }
+}

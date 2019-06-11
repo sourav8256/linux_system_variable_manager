@@ -36,10 +36,15 @@ public class PathManager {
 	
 	void pushPathVariables() {
 		File file = new File(System.getProperty("user.home")+"/.bashrc");
+		
 		String content;
 		try {
 			content = Files.readString(file.toPath());
 			//System.out.println(content);
+			
+			PrintWriter backupPw = new PrintWriter(new File("/tmp/bashrc_backup.sh"));
+			backupPw.print(content);
+			backupPw.close();
 			
 			String finalContent = "export PATH=\"$PATH:"+paths+"\""+"\n\n"+variables;
 			//System.out.println(finalContent.toString());

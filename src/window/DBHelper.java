@@ -32,7 +32,7 @@ public class DBHelper {
 		
 
 		try {
-			conn = DriverManager.getConnection("jdbc:sqlite:test.db");
+			conn = DriverManager.getConnection("jdbc:sqlite:variableStore.db");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
