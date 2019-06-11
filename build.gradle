@@ -17,11 +17,17 @@ dependencies {
 jar {
 	from configurations.compile.collect { zipTree it }
 	manifest.attributes "Main-Class": "window.FrontPage"
+}
 
-	into('lib') {
-		from configurations.extraLibs
+
+
+task copyJarToReleasePackage(type: Copy){
+	copy {
+		from "build/libs"
+		into "releasePackage"
 	}
 }
+
 
 task listjars << {
 	configurations.compile.each { File file -> println file.name }

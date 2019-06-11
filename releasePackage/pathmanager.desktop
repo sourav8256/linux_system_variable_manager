@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Path Manager
+Comment=Eclipse Integrated Development Environment
+Icon=/usr/share/pathmanager/icon.png
+Exec=sudo java -jar /usr/local/bin/pathmanager.jar
+Terminal=true
+Categories=Development
+Name[en_US]=Path Manager
